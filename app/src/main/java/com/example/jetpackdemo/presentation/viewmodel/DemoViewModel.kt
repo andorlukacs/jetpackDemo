@@ -3,7 +3,6 @@ package com.example.jetpackdemo.presentation.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.jetpackdemo.di.ContextModule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,8 +24,6 @@ sealed class UiState {
 
 @HiltViewModel
 class DemoViewModel @Inject constructor() : ViewModel() {
-
-    lateinit var appContext: Context
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Success(0, "Starting"))
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()

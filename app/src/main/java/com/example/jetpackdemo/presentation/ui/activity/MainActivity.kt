@@ -1,11 +1,12 @@
-package com.example.jetpackdemo
+package com.example.jetpackdemo.presentation.ui.activity
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.fragment.app.FragmentActivity
-import com.example.jetpackdemo.presentation.ui.DemoFragment
+import com.example.jetpackdemo.R
+import com.example.jetpackdemo.presentation.ui.fragment.DemoFragment
+import com.example.jetpackdemo.presentation.ui.fragment.MoviesFragment
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
@@ -16,7 +17,7 @@ class MainActivity : FragmentActivity() {
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, DemoFragment())
+                .replace(R.id.fragment_container, MoviesFragment())
                 .commit()
         }
     }

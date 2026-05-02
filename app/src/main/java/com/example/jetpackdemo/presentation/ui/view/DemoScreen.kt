@@ -1,4 +1,4 @@
-package com.example.jetpackdemo.presentation.ui
+package com.example.jetpackdemo.presentation.ui.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jetpackdemo.presentation.viewmodel.UiState
-import com.example.jetpackdemo.ui.theme.JetpackDemoTheme
+import com.example.jetpackdemo.presentation.ui.theme.JetpackDemoTheme
 
 @Composable
 fun DemoScreen(

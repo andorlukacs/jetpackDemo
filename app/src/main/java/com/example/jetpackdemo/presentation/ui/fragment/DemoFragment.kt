@@ -1,4 +1,4 @@
-package com.example.jetpackdemo.presentation.ui
+package com.example.jetpackdemo.presentation.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,11 +8,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.jetpackdemo.presentation.viewmodel.DemoViewModel
-import com.example.jetpackdemo.ui.theme.JetpackDemoTheme
 import androidx.fragment.app.viewModels
-import com.example.jetpackdemo.presentation.viewmodel.UiState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.jetpackdemo.presentation.ui.view.DemoScreen
+import com.example.jetpackdemo.presentation.ui.theme.JetpackDemoTheme
+import com.example.jetpackdemo.presentation.viewmodel.DemoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
