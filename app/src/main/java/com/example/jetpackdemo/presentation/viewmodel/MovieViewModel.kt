@@ -1,5 +1,6 @@
 package com.example.jetpackdemo.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jetpackdemo.data.remote.ApiService
@@ -20,20 +21,29 @@ class MovieViewModel @Inject constructor(
     private val api: ApiService
 ) : ViewModel() {
 
+//    companion object {
+//        private const val TAG = "MovieViewModel"
+//    }
 
     var state = MutableStateFlow<MovieState>(MovieState.Loading)
 
     fun getMovies() {
         state.value = MovieState.Loading
+        Log.d("Nobb", "Loading movies...")
 
         viewModelScope.launch {
+            Log.d("NOBB", "Initiating backend call")
+            val currentTime = System.currentTimeMillis()
             val response = api.searchMovies("Matrix")
+            var endTime = System.currentTimeMillis()
+            Log.d("NOBB", "Backend call done in: ${(endTime - currentTime)} milliseconds")
 
             if (response.error != null) {
+                Log.e("NOBB", "Error: ${response.error}")
                 state.value = MovieState.Error(response.error)
                 return@launch
             }
-
+            Log.d("NOBB", "Success: ${response.movies?.size} results")
             state.value = MovieState.Content(response.movies ?: emptyList())
         }
     }

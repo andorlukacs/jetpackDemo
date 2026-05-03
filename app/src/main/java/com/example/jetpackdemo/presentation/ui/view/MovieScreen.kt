@@ -6,13 +6,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.jetpackdemo.presentation.ui.theme.JetpackDemoTheme
 import com.example.jetpackdemo.presentation.viewmodel.MovieState
-import com.example.jetpackdemo.presentation.viewmodel.UiState
+import kotlinx.coroutines.delay
 
 @Composable
 fun MovieScreen(
@@ -25,6 +23,8 @@ fun MovieScreen(
             when (movieState) {
                 is MovieState.Loading -> {
                     MovieItem("Loading...")
+                    onGetMovies()
+
                 }
 
                 is MovieState.Error -> {
