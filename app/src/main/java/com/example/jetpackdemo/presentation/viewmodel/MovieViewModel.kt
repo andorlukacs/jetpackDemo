@@ -27,14 +27,14 @@ class MovieViewModel @Inject constructor(
 
     var state = MutableStateFlow<MovieState>(MovieState.Loading)
 
-    fun getMovies() {
+    fun getMovies(query: String) {
         state.value = MovieState.Loading
         Log.d("Nobb", "Loading movies...")
 
         viewModelScope.launch {
             Log.d("NOBB", "Initiating backend call")
             val currentTime = System.currentTimeMillis()
-            val response = api.searchMovies("Matrix")
+            val response = api.searchMovies(query)
             var endTime = System.currentTimeMillis()
             Log.d("NOBB", "Backend call done in: ${(endTime - currentTime)} milliseconds")
 
