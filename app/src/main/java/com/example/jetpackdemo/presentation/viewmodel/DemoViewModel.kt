@@ -1,17 +1,12 @@
 package com.example.jetpackdemo.presentation.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,24 +25,13 @@ class DemoViewModel @Inject constructor() : ViewModel() {
 
     fun increment() {
         when (val currentState = _uiState.value) {
-            is UiState.Loading -> {
-//                viewModelScope.launch {
-//                    val incrementTwoDeferred = async { incrementByTwo() }
-//
-//                    incrementTwoDeferred.await()
-//                }
-            }
+            is UiState.Loading -> Unit
 
             is UiState.Success -> {
                 viewModelScope.launch {
-
                     _uiState.update { UiState.Loading }
                     delay(1000)
-                    val incrementDeferred = async {
-                        _uiState.update { UiState.Success(currentState.count + 1, "Success") }
-                    }
-
-                    incrementDeferred.await()
+                    _uiState.update { UiState.Success(currentState.count + 1, "Success") }
                 }
             }
 
@@ -55,20 +39,10 @@ class DemoViewModel @Inject constructor() : ViewModel() {
                 viewModelScope.launch {
                     _uiState.update { UiState.Loading }
                     delay(1000)
-                    val incrementDeferred = async {
-
-                        _uiState.update { UiState.Success(1, "Success") }
-                    }
-
-                    incrementDeferred.await()
+                    _uiState.update { UiState.Success(1, "Success") }
                 }
             }
         }
-    }
-
-    suspend fun incrementByTwo() {
-        delay(1000)
-        _uiState.update { UiState.Success(2, "Success") }
     }
 
     fun decrement() {

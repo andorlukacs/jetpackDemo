@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.jetpackdemo.presentation.ui.theme.JetpackDemoTheme
@@ -18,8 +18,8 @@ import com.example.jetpackdemo.presentation.viewmodel.MovieViewModel
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    counterViewModel: DemoViewModel = viewModel(),
-    movieViewModel: MovieViewModel = viewModel(),
+    counterViewModel: DemoViewModel = hiltViewModel(),
+    movieViewModel: MovieViewModel = hiltViewModel(),
 ) {
     JetpackDemoTheme {
         val navController = rememberNavController()
@@ -46,16 +46,12 @@ fun MainScreen(
             }
         }
     }
-
-
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun DemoScreenPreview() {
     JetpackDemoTheme {
-        MainScreen(
-
-        )
+        MainScreen()
     }
 }

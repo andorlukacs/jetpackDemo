@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -37,22 +36,23 @@ fun MovieScreen(
     onGetMovies: (query: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
-            SearchHeader(onGetMovies)
-            when (movieState) {
-                is MovieState.Loading -> {
-                }
+    Column(modifier = modifier.fillMaxSize()) {
+        SearchHeader(onGetMovies)
+        when (movieState) {
+            is MovieState.Loading -> LoadingIndicator()
 
-                is MovieState.Error -> {
-                    MovieItem("Error.")
-                }
+            is MovieState.Error -> {
+                Text(
+                    text = movieState.message,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
 
-                is MovieState.Content -> {
-                    LazyColumn {
-                        items(movieState.movies) { movie ->
-                            MovieItem(movie.title)
-                        }
+            is MovieState.Content -> {
+                LazyColumn {
+                    items(movieState.movies) { movie ->
+                        MovieItem(movie.title ?: "Unknown title")
                     }
                 }
             }
@@ -68,7 +68,7 @@ fun SearchHeader(
     var text by remember { mutableStateOf(TextFieldValue("")) }
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(56.dp)
     ) {
@@ -81,11 +81,8 @@ fun SearchHeader(
             textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.width(8.dp))
-
         TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp),
+            modifier = Modifier.fillMaxWidth(),
             value = text,
             onValueChange = { newText -> text = newText },
             singleLine = true,
@@ -96,9 +93,7 @@ fun SearchHeader(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(
-            onClick = { onGetMovies(text.text) }
-        ) {
+        Button(onClick = { onGetMovies(text.text) }) {
             Text("Search")
         }
     }
@@ -106,21 +101,21 @@ fun SearchHeader(
 
 @Composable
 fun MovieItem(
-    name: String?,
+    name: String,
     modifier: Modifier = Modifier
 ) {
     Text(
         text = "Movie: $name",
-        modifier = modifier
+        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun DemoScreenPreview() {
+private fun MovieScreenPreview() {
     JetpackDemoTheme {
         MovieScreen(
-            movieState = MovieState.Error("Error"),
+            movieState = MovieState.Error("Movie not found"),
             onGetMovies = {}
         )
     }
