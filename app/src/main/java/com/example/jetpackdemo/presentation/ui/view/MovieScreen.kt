@@ -1,23 +1,20 @@
 package com.example.jetpackdemo.presentation.ui.view
 
-import android.R.attr.text
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -27,12 +24,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.jetpackdemo.domain.model.Movie
 import com.example.jetpackdemo.presentation.ui.theme.JetpackDemoTheme
 import com.example.jetpackdemo.presentation.viewmodel.MovieState
-import kotlinx.coroutines.delay
 
 @Composable
 fun MovieScreen(
@@ -41,7 +38,7 @@ fun MovieScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-        Column(Modifier.padding(innerPadding)) {
+        Column(modifier = Modifier.padding(innerPadding)) {
             SearchHeader(onGetMovies)
             when (movieState) {
                 is MovieState.Loading -> {
@@ -57,7 +54,6 @@ fun MovieScreen(
                             MovieItem(movie.title)
                         }
                     }
-
                 }
             }
         }
@@ -65,45 +61,54 @@ fun MovieScreen(
 }
 
 @Composable
-fun SearchHeader(onGetMovies: (query: String) -> Unit, modifier: Modifier = Modifier) {
-    var text by remember { mutableStateOf("") }
+fun SearchHeader(
+    onGetMovies: (query: String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var text by remember { mutableStateOf(TextFieldValue("")) }
 
-    Row(modifier = modifier) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+    ) {
         Text(
+            modifier = Modifier
+                .fillMaxHeight()
+                .wrapContentHeight(align = Alignment.CenterVertically),
             text = "Search for movies: ",
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineSmall,
+            textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.width(8.dp))
 
         TextField(
-//            state = rememberTextFieldState(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(0.dp),
             value = text,
-            onValueChange = { text = it },
-//            style = MaterialTheme.typography.headlineSmall
-//            label = {
-//                Text(
-//                    text = "Label",
-//                    style = MaterialTheme.typography.bodyMedium
-//                )
-//            }
+            onValueChange = { newText -> text = newText },
+            singleLine = true,
         )
     }
+    Spacer(modifier = Modifier.height(8.dp))
     Column(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
-            onClick = { onGetMovies(text) }
+            onClick = { onGetMovies(text.text) }
         ) {
             Text("Search")
         }
     }
-
-
 }
 
 @Composable
-fun MovieItem(name: String?, modifier: Modifier = Modifier) {
+fun MovieItem(
+    name: String?,
+    modifier: Modifier = Modifier
+) {
     Text(
         text = "Movie: $name",
         modifier = modifier
@@ -115,7 +120,7 @@ fun MovieItem(name: String?, modifier: Modifier = Modifier) {
 private fun DemoScreenPreview() {
     JetpackDemoTheme {
         MovieScreen(
-            movieState = MovieState.Loading,
+            movieState = MovieState.Error("Error"),
             onGetMovies = {}
         )
     }

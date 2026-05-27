@@ -19,7 +19,7 @@ import com.example.jetpackdemo.presentation.viewmodel.UiState
 import com.example.jetpackdemo.presentation.ui.theme.JetpackDemoTheme
 
 @Composable
-fun DemoScreen(
+fun CounterScreen(
     uiState: UiState,
     onIncrement: () -> Unit,
     onDecrement: () -> Unit,
@@ -66,7 +66,7 @@ fun DemoScreen(
 @Composable
 private fun DemoScreenPreview() {
     JetpackDemoTheme {
-        DemoScreen(
+        CounterScreen(
             uiState = UiState.Success(0, "Starting"),
             onIncrement = {},
             onDecrement = {}
